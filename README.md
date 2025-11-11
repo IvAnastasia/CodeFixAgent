@@ -2,13 +2,23 @@
 
 An LLM-based agent that uses uncertainty estimation to selectively apply code fixes, applying only changes the model is confident about.
 
-## Research Motivation
+## Motivation
 
-Uncertainty-based methods are widely used in robotics for safe action selection (e.g., KnowNo, conformal prediction methods). The principle is to formulate the next robot task as a Multiple Choice Question Answering (MCQA) problem over possible actions and assign probabilities to each option using model logits (as in KnowNo, LAP, or more stable options like LofreeCP). Conformal Prediction (CP) is then applied: if only one option remains after CP, the robot executes the action; otherwise, it asks for help.
+In robotics, researchers use uncertainty to help robots decide when to act and when to ask for help. The basic approach (Ren et al., 2023; Quach et al., 2024) works like this:
+1. Frame the robot's next action as a multiple choice question answering task (options A, B etc.)
+2. Use the model's logits to assign probabilities to each option
+3. Apply Conformal Prediction (Vovk et al., 1999; Angelopoulos & Bates, 2021) to filter uncertain actions
+4. If only one option remains, do it; otherwise, ask a human for help
 
-Recent studies (AmbiK, Ivanova et al. 2025) have shown that since LLM logits are often miscalibrated, sometimes the simplest binary approach outperforms complex CP-based methods. This suggests that labeling each option as "certain" or "uncertain" may be informative.
+This is useful for safety-critical applications where you don't want the robot doing something it's not sure about.
 
-In the context of code fixing (unlike robot actions), multiple options from MCQA may be possible simultaneously—we can apply multiple fixes if the model is certain about them.
+Recent studies (Guo et al. 2017, Ivanova et al. 2025) have shown that since LLM logits are often miscalibrated, sometimes the simplest binary approach outperforms complex CP-based methods. This suggests that labeling each option as "certain" or "uncertain" may be informative.
+
+In the context of code fixing (unlike robot actions), multiple options from MCQA may be possible simultaneously. We apply multiple fixes if the model is certain about them.
+
+Note on ReAct (Yao et al., 2023) approach: 
+
+ReAct is the agent architecture where the model iteratively reasons and acts. However, recent work like AutoGuide (Hu et al., 2024) has shown that ReAct is often outperformed by simpler approaches. ReAct's interleaved reasoning can actually hurt performance because the model gets distracted by its own reasoning traces or early reasoning mistakes propagate through iterations. So if I had more resources I would actually so something AutoGuide-style - using offline experience to compare trajectories and propose high-level guidelines for the similar situations (similar context (envireonment) state for robots, similar code problem type is our case).
 
 ## Approach
 
@@ -18,10 +28,10 @@ This agent implements a three-stage uncertainty-based code fixing pipeline:
 2. **Action Generation**: The LLM generates multiple concrete fix options (MCQA)
 3. **Binary Uncertainty Classification**: Each fix option is labeled as either:
    - **"certain"**: The model is confident this fix will correctly address the bug
-   - **"uncertain"**: The model is not confident or the fix is risky
-4. **Selective Application**: Only fixes marked as "certain" are applied to the code
+   - **"uncertain"**: The model is not confident and the fix is risky
+4. **Fixing Code**: Only fixes marked as "certain" are applied to the code
 
-This approach allows the agent to be conservative: it only makes changes when confident, reducing the risk of introducing new bugs.
+This approach only makes changes when LLM is confident, reducing the risk of introducing new bugs.
 
 ## Implementation
 
@@ -101,17 +111,17 @@ The agent is evaluated on the HumanEvalFix dataset, which contains buggy Python 
 humanevalfix-agent/
 ├── src/
 │   ├── agent/
-│   │   ├── agent.py              # Main agent implementation
-│   │   ├── executor.py           # Code execution wrapper
+│   │   ├── agent.py            
+│   │   ├── executor.py          
 │   │   └── tools/
-│   │       ├── llm_client.py     # Ollama LLM client
-│   │       └── code_interpreter.py  # Safe code execution
+│   │       ├── llm_client.py     
+│   │       └── code_interpreter.py
 │   └── evaluation/
-│       ├── humanevalfix_loader.py  # Dataset loader
-│       └── metrics.py            # Evaluation metrics
+│       ├── humanevalfix_loader.py  
+│       └── metrics.py           
 ├── scripts/
-│   ├── evaluate_agent.py         # Evaluation script
-│   └── run_agent_and_eval.py     # Batch evaluation runner
+│   ├── evaluate_agent.py         
+│   └── run_agent_and_eval.py    
 └── requirements.txt
 ```
 
@@ -121,15 +131,21 @@ humanevalfix-agent/
 - Experiment with different uncertainty thresholds and calibration methods
 - Compare binary classification against multi-level certainty and conformal prediction
 - Investigate prompt engineering to improve certainty assessment in small models
-- Add support for asking for human help when all fixes are uncertain
 
 ## References
 
-- KnowNo: Uncertainty-based action selection in robotics
-- Conformal Prediction (Vovk et al.)
-- AmbiK, Ivanova et al. 2025: Binary uncertainty approaches for miscalibrated LLMs
-- HumanEvalFix: Code fixing benchmark dataset
+Ren, A. Z., Dixit, A., Bodreau, A., Singh, S., Agarwal, S., Bisk, Y., & Narasimhan, K. (2023). KnowNo: Safe Human-Robot Collaboration through Conformal Prediction. ICRA.
+Quach, K. G., Xu, B., Tian, Y., & Anderson, P. (2024). LAP: Language-Conditioned Affordance Prediction with Conformal Prediction. arXiv preprint arXiv:2410.08223.
 
-## License
+Vovk, V., Gammerman, A., & Shafer, G. (1999). Algorithmic Learning in a Random World. Springer.
+Angelopoulos, A. N., & Bates, S. (2021). A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification. arXiv preprint arXiv:2107.07511.
 
-MIT License
+Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q. (2017). On Calibration of Modern Neural Networks. ICML.
+
+Ivanova, A., Bakaeva, E., Volovikova, Z., Kovalev, A. K., and Panov, A. I. (2025). AmbiK: Dataset of Ambiguous Tasks in Kitchen Environment. ACL 2025.
+
+Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., & Cao, Y. (2023). ReAct: Synergizing Reasoning and Acting in Language Models. ICLR.
+
+Hu, J., Chen, T., Huang, S., Lou, J.-G., Muennighoff, N., Nagappan, M., & Zhao, J. (2024). AutoGuide: Automated Generation and Selection of State-Aware Guidelines for Large Language Model Agents. arXiv preprint arXiv:2403.08978.
+
+Muennighoff, N., Liu, Q., Zebaze, A., Zheng, Q., Hui, B., Zhuo, T. Y., ... & von Werra, L. (2023). OctoPack: Instruction Tuning Code Large Language Models.
