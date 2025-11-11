@@ -1,0 +1,67 @@
+{
+  "total": 10,
+  "correct": 0,
+  "pass@1": 0.0,
+  "details": [
+    {
+      "buggy": "def prime_length(string):\n    l = len(string)\n    if l == 0 or l == 1:\n        return False\n    for i in range(3, l):\n        if l % i == 0:\n            return False\n    return True\n",
+      "expected": "def check(prime_length):\n\n    # Check some simple cases\n    assert prime_length('Hello') == True\n    assert prime_length('abcdcba') == True\n    assert prime_length('kittens') == True\n    assert prime_length('orange') == False\n    assert prime_length('wow') == True\n    assert prime_length('world') == True\n    assert prime_length('MadaM') == True\n    assert prime_length('Wow') == True\n    assert prime_length('') == False\n    assert prime_length('HI') == True\n    assert prime_length('go') == True\n    assert prime_length('gogo') == False\n    assert prime_length('aaaaaaaaaaaaaaa') == False\n\n    # Check some edge cases that are easy to work out by hand.\n    assert prime_length('Madam') == True\n    assert prime_length('M') == False\n    assert prime_length('0') == False\n\ncheck(prime_length)",
+      "final_code": "def prime_length(string):\n    l = len(string)\n    if l == 0 or l == 1:\n        return False\n    for i in range(3, l):\n        if l % i == 0:\n            return False\n    return True\n",
+      "ok": false
+    },
+    {
+      "buggy": "def skjkasdkd(lst):\n    def isPrime(n):\n        for i in range(2,int(n**0.5)+1):\n            if n%i==0:\n                return True\n\n        return False\n    maxx = 0\n    i = 0\n    while i < len(lst):\n        if(lst[i] > maxx and isPrime(lst[i])):\n            maxx = lst[i]\n        i+=1\n    result = sum(int(digit) for digit in str(maxx))\n    return result\n\n",
+      "expected": "def check(skjkasdkd):\n\n    # Check some simple cases\n    assert skjkasdkd([0,3,2,1,3,5,7,4,5,5,5,2,181,32,4,32,3,2,32,324,4,3]) == 10, \"This prints if this assert fails 1 (good for debugging!)\"\n\n    # Check some edge cases that are easy to work out by hand.\n    assert skjkasdkd([1,0,1,8,2,4597,2,1,3,40,1,2,1,2,4,2,5,1]) == 25, \"This prints if this assert fails 2 (also good for debugging!)\"\n\n    # Check some edge cases that are easy to work out by hand.\n    assert skjkasdkd([1,3,1,32,5107,34,83278,109,163,23,2323,32,30,1,9,3]) == 13, \"This prints if this assert fails 3 (also good for debugging!)\"\n\n    # Check some edge cases that are easy to work out by hand.\n    assert skjkasdkd([0,724,32,71,99,32,6,0,5,91,83,0,5,6]) == 11, \"This prints if this assert fails 4 (also good for debugging!)\"\n    \n    # Check some edge cases that are easy to work out by hand.\n    assert skjkasdkd([0,81,12,3,1,21]) == 3, \"This prints if this assert fails 5 (also good for debugging!)\"\n\n    # Check some edge cases that are easy to work out by hand.\n    assert skjkasdkd([0,8,1,2,1,7]) == 7, \"This prints if this assert fails 6 (also good for debugging!)\"\n\n    assert skjkasdkd([8191]) == 19, \"This prints if this assert fails 7 (also good for debugging!)\"\n    assert skjkasdkd([8191, 123456, 127, 7]) == 19, \"This prints if this assert fails 8 (also good for debugging!)\"\n    assert skjkasdkd([127, 97, 8192]) == 10, \"This prints if this assert fails 9 (also good for debugging!)\"\n\ncheck(skjkasdkd)",
+      "final_code": "def skjkasdkd(lst):\n    def isPrime(n):\n        for i in range(2,int(n**0.5)+1):\n            if n%i==0:\n                return True\n\n        return False\n    maxx = 0\n    i = 0\n    while i < len(lst):\n        if(lst[i] > maxx and isPrime(lst[i])):\n            maxx = lst[i]\n        i+=1\n    result = sum(int(digit) for digit in str(maxx))\n    return result\n\n",
+      "ok": false
+    },
+    {
+      "buggy": "def same_chars(s0: str, s1: str):\n    return s0 == s1\n",
+      "expected": "\n\n\n\n\ndef check(same_chars):\n    assert same_chars('eabcdzzzz', 'dddzzzzzzzddeddabc') == True\n    assert same_chars('abcd', 'dddddddabc') == True\n    assert same_chars('dddddddabc', 'abcd') == True\n    assert same_chars('eabcd', 'dddddddabc') == False\n    assert same_chars('abcd', 'dddddddabcf') == False\n    assert same_chars('eabcdzzzz', 'dddzzzzzzzddddabc') == False\n    assert same_chars('aabb', 'aaccc') == False\n\ncheck(same_chars)",
+      "final_code": "def same_chars(s0: str, s1: str):\n    return s0 == s1\n",
+      "ok": false
+    },
+    {
+      "buggy": "def get_positive(l: list):\n    return [e for e in l if e < 0]\n",
+      "expected": "\n\n\n\n\ndef check(get_positive):\n    assert get_positive([-1, -2, 4, 5, 6]) == [4, 5, 6]\n    assert get_positive([5, 3, -5, 2, 3, 3, 9, 0, 123, 1, -10]) == [5, 3, 2, 3, 3, 9, 123, 1]\n    assert get_positive([-1, -2]) == []\n    assert get_positive([]) == []\n\ncheck(get_positive)",
+      "final_code": "def get_positive(l: list):\n    return [e for e in l if e < 0]\n",
+      "ok": false
+    },
+    {
+      "buggy": "def check_dict_case(dict):\n    if len(dict.keys()) == 0:\n        return False\n    else:\n        state = \"start\"\n        for key in dict.keys():\n\n            if isinstance(key, str) == False:\n                state = \"mixed\"\n                break\n            if state == \"start\":\n                if key.isupper():\n                    state = \"upper\"\n                elif key.islower():\n                    state = \"lower\"\n                else:\n                    break\n            elif (state == \"upper\" and not key.isupper()) and (state == \"lower\" and not key.islower()):\n                    state = \"mixed\"\n                    break\n            else:\n                break\n        return state == \"upper\" or state == \"lower\" \n",
+      "expected": "def check(check_dict_case):\n\n    # Check some simple cases\n    assert check_dict_case({\"p\":\"pineapple\", \"b\":\"banana\"}) == True, \"First test error: \" + str(check_dict_case({\"p\":\"pineapple\", \"b\":\"banana\"}))\n    assert check_dict_case({\"p\":\"pineapple\", \"A\":\"banana\", \"B\":\"banana\"}) == False, \"Second test error: \" + str(check_dict_case({\"p\":\"pineapple\", \"A\":\"banana\", \"B\":\"banana\"}))\n    assert check_dict_case({\"p\":\"pineapple\", 5:\"banana\", \"a\":\"apple\"}) == False, \"Third test error: \" + str(check_dict_case({\"p\":\"pineapple\", 5:\"banana\", \"a\":\"apple\"}))\n    assert check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}) == False, \"Fourth test error: \" + str(check_dict_case({\"Name\":\"John\", \"Age\":\"36\", \"City\":\"Houston\"}))\n    assert check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }) == True, \"Fifth test error: \" + str(check_dict_case({\"STATE\":\"NC\", \"ZIP\":\"12345\" }))      \n    assert check_dict_case({\"fruit\":\"Orange\", \"taste\":\"Sweet\" }) == True, \"Fourth test error: \" + str(check_dict_case({\"fruit\":\"Orange\", \"taste\":\"Sweet\" }))      \n\n\n    # Check some edge cases that are easy to work out by hand.\n    assert check_dict_case({}) == False, \"1st edge test error: \" + str(check_dict_case({}))\n\ncheck(check_dict_case)",
+      "final_code": "def check_dict_case(dict):\n    if len(dict.keys()) == 0:\n        return False\n    else:\n        state = \"start\"\n        for key in dict.keys():\n\n            if isinstance(key, str) == False:\n                state = \"mixed\"\n                break\n            if state == \"start\":\n                if key.isupper():\n                    state = \"upper\"\n                elif key.islower():\n                    state = \"lower\"\n                else:\n                    break\n            elif (state == \"upper\" and not key.isupper()) and (state == \"lower\" and not key.islower()):\n                    state = \"mixed\"\n                    break\n            else:\n                break\n        return state == \"upper\" or state == \"lower\" \n",
+      "ok": false
+    },
+    {
+      "buggy": "def is_multiply_prime(a):\n    def is_prime(n):\n        for j in range(0,n):\n            if n%j == 0:\n                return False\n        return True\n\n    for i in range(2,101):\n        if not is_prime(i): continue\n        for j in range(2,101):\n            if not is_prime(j): continue\n            for k in range(2,101):\n                if not is_prime(k): continue\n                if i*j*k == a: return True\n    return False\n",
+      "expected": "def check(is_multiply_prime):\n\n    assert is_multiply_prime(5) == False\n    assert is_multiply_prime(30) == True\n    assert is_multiply_prime(8) == True\n    assert is_multiply_prime(10) == False\n    assert is_multiply_prime(125) == True\n    assert is_multiply_prime(3 * 5 * 7) == True\n    assert is_multiply_prime(3 * 6 * 7) == False\n    assert is_multiply_prime(9 * 9 * 9) == False\n    assert is_multiply_prime(11 * 9 * 9) == False\n    assert is_multiply_prime(11 * 13 * 7) == True\n\ncheck(is_multiply_prime)",
+      "final_code": "def is_multiply_prime(a):\n    def is_prime(n):\n        for j in range(0,n):\n            if n%j == 0:\n                return False\n        return True\n\n    for i in range(2,101):\n        if not is_prime(i): continue\n        for j in range(2,101):\n            if not is_prime(j): continue\n            for k in range(2,101):\n                if not is_prime(k): continue\n                if i*j*k == a: return True\n    return False\n",
+      "ok": false
+    },
+    {
+      "buggy": "def starts_one_ends(n):\n    if n == 1: return 1\n    return 18 * n * (10 ** (n - 2))\n",
+      "expected": "def check(starts_one_ends):\n\n    # Check some simple cases\n    assert True, \"This prints if this assert fails 1 (good for debugging!)\"\n    assert starts_one_ends(1) == 1\n    assert starts_one_ends(2) == 18\n    assert starts_one_ends(3) == 180\n    assert starts_one_ends(4) == 1800\n    assert starts_one_ends(5) == 18000\n\n    # Check some edge cases that are easy to work out by hand.\n    assert True, \"This prints if this assert fails 2 (also good for debugging!)\"\n\ncheck(starts_one_ends)",
+      "final_code": "def starts_one_ends(n):\n    if n == 1: return 1\n    return 18 * n * (10 ** (n - 2))\n",
+      "ok": false
+    },
+    {
+      "buggy": "def change_base(x: int, base: int):\n    ret = \"\"\n    while x > 0:\n        ret = str(x % base) + ret\n        x -= base\n    return ret\n",
+      "expected": "\n\n\n\n\ndef check(change_base):\n    assert change_base(8, 3) == \"22\"\n    assert change_base(9, 3) == \"100\"\n    assert change_base(234, 2) == \"11101010\"\n    assert change_base(16, 2) == \"10000\"\n    assert change_base(8, 2) == \"1000\"\n    assert change_base(7, 2) == \"111\"\n    for x in range(2, 8):\n        assert change_base(x, x + 1) == str(x)\n\ncheck(change_base)",
+      "final_code": "def change_base(x: int, base: int):\n    ret = \"\"\n    while x > 0:\n        ret = str(x % base) + ret\n        x -= base\n    return ret\n",
+      "ok": false
+    },
+    {
+      "buggy": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    import collections\n    c = collections.Counter(numbers)\n    return [n for n in numbers if c[n] < 1]\n",
+      "expected": "\n\n\n\n\ndef check(remove_duplicates):\n    assert remove_duplicates([]) == []\n    assert remove_duplicates([1, 2, 3, 4]) == [1, 2, 3, 4]\n    assert remove_duplicates([1, 2, 3, 2, 4, 3, 5]) == [1, 4, 5]\n\ncheck(remove_duplicates)",
+      "final_code": "from typing import List\n\n\ndef remove_duplicates(numbers: List[int]) -> List[int]:\n    import collections\n    c = collections.Counter(numbers)\n    return [n for n in numbers if c[n] < 1]\n",
+      "ok": false
+    },
+    {
+      "buggy": "def words_in_sentence(sentence):\n    new_lst = []\n    for word in sentence.split():\n        flg = 0\n        for i in range(2, len(word)):\n            if len(word)%i == 0:\n                flg = 1\n        if flg == 0 or len(word) == 2:\n            new_lst.append(word)\n    return \" \".join(new_lst)\n",
+      "expected": "def check(words_in_sentence):\n\n    # Check some simple cases\n    assert words_in_sentence(\"This is a test\") == \"is\"\n    assert words_in_sentence(\"lets go for swimming\") == \"go for\"\n    assert words_in_sentence(\"there is no place available here\") == \"there is no place\"\n    assert words_in_sentence(\"Hi I am Hussein\") == \"Hi am Hussein\"\n    assert words_in_sentence(\"go for it\") == \"go for it\"\n\n    # Check some edge cases that are easy to work out by hand.\n    assert words_in_sentence(\"here\") == \"\"\n    assert words_in_sentence(\"here is\") == \"is\"\n\ncheck(words_in_sentence)",
+      "final_code": "def words_in_sentence(sentence):\n    new_lst = []\n    for word in sentence.split():\n        flg = 0\n        for i in range(2, len(word)):\n            if len(word)%i == 0:\n                flg = 1\n        if flg == 0 or len(word) == 2:\n            new_lst.append(word)\n    return \" \".join(new_lst)\n",
+      "ok": false
+    }
+  ]
+}
