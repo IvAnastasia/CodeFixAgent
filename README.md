@@ -120,8 +120,7 @@ humanevalfix-agent/
 │       ├── humanevalfix_loader.py  
 │       └── metrics.py           
 ├── scripts/
-│   ├── evaluate_agent.py         
-│   └── run_agent_and_eval.py    
+│   ├── evaluate_agent.py          
 └── requirements.txt
 ```
 
