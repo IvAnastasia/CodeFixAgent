@@ -12,8 +12,6 @@ Dataset format expected by HumanEvalFixLoader:
 
 Usage:
   python3 scripts/evaluate_agent.py --dataset path/to/dataset.json --subsample 20
-
-If no dataset is provided, the script will run on a tiny built-in sample.
 """
 import argparse
 import json
