@@ -1,5 +1,3 @@
-# This file provides functionality to load the HumanEvalFix dataset for evaluation purposes.
-
 import json
 import os
 
